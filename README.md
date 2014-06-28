@@ -1,4 +1,5 @@
 open-nuance
 ===========
 
-Numerical Algorithms for Cardiac Electrophysiology
+NUmerical Algorithms for Cardiac Electrophysiology
+
