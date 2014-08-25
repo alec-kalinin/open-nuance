@@ -27,7 +27,7 @@ vector<Vector3D> generatePoints(int N)
 {
     vector<Vector3D> points;
 
-    //srand(time(0));
+    srand(time(NULL));
     for (int i = 0; i < N; i++) {
         Vector3D v;
         v.x = (double)rand() / (double)RAND_MAX;
@@ -54,6 +54,22 @@ void stGetR(vector<Vector3D> & p, vector<Vector3D> & q, MatrixMN & R)
     }
 }
 
+//! OpenMP matrix R calculations
+void mtGetR(vector<Vector3D> & p, vector<Vector3D> & q, MatrixMN & R)
+{
+    #pragma omp parallel for
+    for (int i = 0; i < p.size(); i++) {
+        Vector3D & a = p[i];
+        for (int j = 0; j < q.size(); j++) {
+            Vector3D & b = q[j];
+
+            Vector3D r = b - a;
+            R(i, j) = 1 / (1 + sqrt(r * r));
+        }
+    }
+}
+
+
 int main()
 {
     const int N = 5000;
@@ -62,11 +78,22 @@ int main()
     vector<Vector3D> q = generatePoints(N);
     MatrixMN R(N, N);
 
-    stGetR(p, q, R);
+    savetxt("../results/tests/p.txt", p);
+    savetxt("../results/tests/q.txt", q);
 
-    savetxt("p.npy", p);
-    cout << setprecision(4);
-    cout << R(0, 0);
+    clock_t t0, t1;
+
+    t0 = clock();
+    stGetR(p, q, R);
+    t1 = clock();
+    cout << "stGetR(): " << t1 - t0 << " ms" << endl;
+    savebin("../results/tests/stR.bin", R);
+
+    t0 = clock();
+    mtGetR(p, q, R);
+    t1 = clock();
+    cout << "mtGetR(): " << t1 - t0 << " ms" << endl;
+    savebin("../results/tests/mtR.bin", R);
 
     return 0;
 }

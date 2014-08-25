@@ -24,11 +24,39 @@ void savetxt(const string & fname, const vector<Vector3D> & a)
     ofstream out;
     out.open(fname.c_str());
 
-    out << setprecision(4);
+    out << fixed << setprecision(6);
     for (int i = 0; i < a.size(); i++) {
-        out << a[i].x << endl;
+        out << a[i].x << " ";
+        out << a[i].y << " ";
+        out << a[i].z << endl;
     }
 
+    out.close();
+}
+
+void savetxt(const string & fname, const MatrixMN & A)
+{
+    ofstream out;
+    out.open(fname.c_str());
+
+    out << fixed << setprecision(6);
+    for (int i = 0; i < A.m_nRows; i++) {
+        for (int j = 0; j < A.m_nCols; j++) {
+            out << A(i, j);
+            if (j < A.m_nRows - 1)
+                out << " ";
+        }
+        out << endl;
+    }
+
+    out.close();
+}
+
+void savebin(const std::string & fname, const MatrixMN & A)
+{
+    ofstream out;
+    out.open(fname.c_str(), ios::out | ios::binary);
+    out.write((char *)A.m_v, A.m_nRows * A.m_nCols * sizeof(double));
     out.close();
 }
 

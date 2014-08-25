@@ -4,8 +4,8 @@ VERSION = "0.0.1"
 TOOLS = [ "mingw" ]
 PLATFORM = "win64"
 
-CCFLAGS = "-O2"
-LFLAGS = ""
+CCFLAGS = "-O2 -fopenmp"
+LFLAGS = "-fopenmp"
 SOURCES = [ "linalg/Vector3D.cpp",
             "linalg/VectorN.cpp",
             "linalg/MatrixMN.cpp",

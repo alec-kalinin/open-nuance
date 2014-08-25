@@ -22,4 +22,6 @@
 void savetxt(const std::string & fname, const std::vector<Vector3D> & a);
 void savetxt(const std::string & fname, const MatrixMN & A);
 
+void savebin(const std::string & fname, const MatrixMN & A);
+
 #endif // IO_H
