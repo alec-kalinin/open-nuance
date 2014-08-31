@@ -20,6 +20,7 @@
 #include "../linalg/Vector3D.h"
 #include "../linalg/MatrixMN.h"
 #include "../io/io.h"
+#include "../utils/UTimer.h"
 
 using namespace std;
 
@@ -81,18 +82,18 @@ int main()
     savetxt("../results/tests/p.txt", p);
     savetxt("../results/tests/q.txt", q);
 
-    clock_t t0, t1;
+    UTimer timer;
 
-    t0 = clock();
+    timer.start();
     stGetR(p, q, R);
-    t1 = clock();
-    cout << "stGetR(): " << t1 - t0 << " ms" << endl;
+    timer.stop();
+    cout << "stGetR(): " << timer.ms() << " ms" << endl;
     savebin("../results/tests/stR.bin", R);
 
-    t0 = clock();
+    timer.start();
     mtGetR(p, q, R);
-    t1 = clock();
-    cout << "mtGetR(): " << t1 - t0 << " ms" << endl;
+    timer.stop();
+    cout << "mtGetR(): " << timer.ms() << " ms" << endl;
     savebin("../results/tests/mtR.bin", R);
 
     return 0;

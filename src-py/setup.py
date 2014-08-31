@@ -18,11 +18,11 @@ from Cython.Distutils import build_ext
 
 import numpy
 
-extra_args = ["-fopenmp", 
+extra_args = ["-fopenmp",
               "-Wno-unused-function", "-Wno-maybe-uninitialized", "-Wno-format"]
 extra_macros = []
-ext_modules = [ Extension("tests.cython_omp_ext", 
-                          ["tests/cython_omp_ext.pyx"],
+ext_modules = [ Extension("tests.cython_mp_ext", 
+                          ["tests/cython_mp.pyx"],
                           include_dirs=[numpy.get_include()],
                           extra_compile_args=extra_args,
                           extra_link_args=extra_args,

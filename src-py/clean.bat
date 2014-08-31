@@ -1,3 +1,3 @@
 @echo off
-del tests\cython_omp_ext.c tests\cython_omp_ext.pyd
+del tests\cython_mp.c tests\cython_mp_ext.pyd
 rmdir /S /Q build

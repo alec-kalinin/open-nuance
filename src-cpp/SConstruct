@@ -10,6 +10,7 @@ SOURCES = [ "linalg/Vector3D.cpp",
             "linalg/VectorN.cpp",
             "linalg/MatrixMN.cpp",
             "io/io.cpp",
+            "utils/UTimer.cpp",
             "tests/benchmark-omp.cpp" ]
 
 env = Environment(ENV=os.environ, tools=TOOLS,

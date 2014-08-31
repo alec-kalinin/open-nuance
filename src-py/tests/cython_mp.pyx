@@ -37,18 +37,10 @@ def getThreadsNum():
         for i in prange(1):
             num_threads = openmp.omp_get_num_threads()
     return num_threads
-    
-def nstGetR(p, q):
-        Rx = p[:, 0:1] - q[0:1]
-        Ry = p[:, 1:2] - q[1:2]
-        Rz = p[:, 2:3] - q[2:3]
          
-        R = 1 / (1 + np.sqrt(Rx**2 + Ry**2 + Rz**2))
-        
-        return R
-          
 @cython.boundscheck(False)
-def cstGetR(pp, pq):
+@cython.wraparound(False)
+def cyspGetR(pp, pq):
     pR = np.empty((pp.shape[0], pq.shape[1]))    
     
     cdef int i, j, k
@@ -70,7 +62,8 @@ def cstGetR(pp, pq):
     return R
 
 @cython.boundscheck(False)
-def cmtGetR(pp, pq):
+@cython.wraparound(False)
+def cympGetR(pp, pq):
     pR = np.empty((pp.shape[0], pq.shape[1]))    
     
     cdef int i, j, k
@@ -80,15 +73,14 @@ def cmtGetR(pp, pq):
     cdef double[:, :] q = pq
     cdef double[:, :] R = pR
     cdef double rx, ry, rz
-    cdef double l_sq, l
     
-    with nogil:
-        for i in prange(nP):
+    with nogil, parallel():
+        for i in prange(nP, schedule='guided'):
             for j in xrange(nQ):
                 rx = p[i, 0] - q[0, j]
                 ry = p[i, 1] - q[1, j]
                 rz = p[i, 2] - q[2, j]
-
+                
                 R[i, j] = 1 / (1 + sqrt(rx * rx + ry * ry + rz * rz))
                 
     return R
