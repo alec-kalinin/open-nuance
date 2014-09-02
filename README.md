@@ -12,21 +12,21 @@ Environment
 
 In general this tool should work on any platform with modern C++ and Python. But now algorithms are tested on following platform:
 
-Platform:
-    Windows 8.1 (win-64)
-	Intel Core i7-4702MQ CPU 2.20 GZ (4 cores)
-	16G memory
-
-Python:
-    distribution: Anaconda (http://continuum.io)
-    version: 2.7.6
-
-C++:
-   MinGW g++ 4.8.1 (rev5, Built by MinGW-W64 project)
-
+<dl>
+  <dt>Platform:</dt>
+    <dd>Windows 8.1 (win-64)</dd>
+	<dd>Intel Core i7-4702MQ CPU 2.20 GZ (4 cores)</dd>
+	<dd>16G memory</dd>
+  <dt>Python:</dt>
+    <dd>distribution: Anaconda [http://continuum.io]</dd>
+    <dd>version: 2.7.6</dd>
+  <dt>C++:</dt>
+    <dd>MinGW g++ 4.8.1 (rev5, Built by MinGW-W64 project)</dd>
+<dl>
+   
 Notes for developers
 --------------------
 
-C++ comments:
-    Doxygen Qt comments style
-    http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html#cppblock
+<dl>
+  <dt>C++ comments:</dt>
+    <dd>Doxygen Qt comments style [http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html#cppblock]</dd>
