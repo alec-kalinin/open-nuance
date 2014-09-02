@@ -17,8 +17,9 @@
 
 import timeit
 import numpy as np
-import numpy_mp as npmp
 import cython_mp_ext as cymp
+from numba_mp import nbspGetR, nbmpGetR
+import numpy_mp as npmp
 
 def main():
     N = 5000
@@ -26,11 +27,11 @@ def main():
     p = np.random.rand(N, 3)
     q = np.random.rand(3, N)
     
-    print ("Python single process:")
-    t0 = timeit.default_timer()
-    #nomp.pspGetR(p, q)
-    t1 = timeit.default_timer()
-    print("time: {:.3f} s.\n".format(t1 - t0))    
+#    print ("Python single process:")
+#    t0 = timeit.default_timer()
+#    #nomp.pspGetR(p, q)
+#    t1 = timeit.default_timer()
+#    print("time: {:.3f} s.\n".format(t1 - t0))    
     
     print ("NumPy single process:")
     t0 = timeit.default_timer()
@@ -58,6 +59,20 @@ def main():
     t1 = timeit.default_timer()
     print("time: {:.3f} s.".format(t1 - t0))
     print ("err: {:.3e}\n".format(np.linalg.norm(npspR - cympR)))
+
+    print ("Numba single process:")
+    t0 = timeit.default_timer()
+    nbspR = nbspGetR(p, q)
+    t1 = timeit.default_timer()
+    print("time: {:.3f} s.".format(t1 - t0))
+    print ("err: {:.3e}\n".format(np.linalg.norm(npspR - nbspR)))
+
+    print ("Numba multiple process:")
+    t0 = timeit.default_timer()
+    nbmpR = nbmpGetR(p, q)
+    t1 = timeit.default_timer()
+    print("time: {:.3f} s.".format(t1 - t0))
+    print ("err: {:.3e}\n".format(np.linalg.norm(npspR - nbmpR)))
     
 if __name__ == '__main__':
     main()

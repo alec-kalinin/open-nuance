@@ -17,27 +17,13 @@ import os, sys
 sys.path.append(os.path.abspath('..'))
 
 import ctypes
-import multiprocessing as mp
 import numpy as np
+import multiprocessing as mp
 from math import sqrt
 
 import mp_share
+import utils.utils as utils
 
-def generateJobs(nItems, nCPU):
-    q = nItems / nCPU
-    r = nItems % nCPU
- 
-    jobs = []
-    firstRow = 0
-    for i in range(nCPU):
-        rowsInJob = q
-        if (r > 0):
-            rowsInJob += 1
-            r -= 1
-        jobs.append((firstRow, firstRow + rowsInJob))
-        firstRow += rowsInJob
-        
-    return jobs
 
 def pyspGetR(p, q):
     R = np.empty((p.shape[0], q.shape[1]))    
@@ -86,8 +72,8 @@ def npmpGetR(p, q):
     sh_q = mp.RawArray(ctypes.c_double, q.ravel())
     sh_R = mp.RawArray(ctypes.c_double, nP * nQ)
     
-    nCPU = mp.cpu_count()
-    jobs = generateJobs(nP, nCPU)
+    nCPU = 4#utils.getCPUCount()
+    jobs = utils.generateJobs(nP, nCPU)
     
     pool = mp.Pool(processes=nCPU, initializer=mp_init, initargs=(sh_p, sh_q, sh_R))
     pool.map(npmpGetR_worker, jobs, chunksize=1)
