@@ -10,7 +10,7 @@
 #     Redistribution and use of the source code with or without modification
 #     are permitted for any scientific, research and educational purposes.
 
-""" Test numba parallel accelerated calculations.
+""" Numba parallel calculations examples.
 """
 
 import os, sys
@@ -19,14 +19,13 @@ sys.path.append(os.path.abspath('..'))
 import numpy as np
 from numba import jit, void, double, int64
 from ctypes import pythonapi, c_void_p
-import multiprocessing
 import threading
 from math import sqrt
 
 import utils.utils as utils
 
 @jit(double[:, :](double[:, :], double[:, :]))
-def nbspGetR(p, q):
+def spnbGetR(p, q):
     nP = p.shape[0]
     nQ = q.shape[1]
     
@@ -69,7 +68,7 @@ def makeWorker():
     
     return worker_ext
 
-def nbmpGetR(p, q):
+def mpnbGetR(p, q):
     nP, nQ = p.shape[0], q.shape[1]
     R = np.empty((nP, nQ))
 

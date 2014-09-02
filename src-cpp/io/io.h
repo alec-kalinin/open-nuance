@@ -19,9 +19,10 @@
 #include "../linalg/Vector3D.h"
 #include "../linalg/MatrixMN.h"
 
-void savetxt(const std::string & fname, const std::vector<Vector3D> & a);
+void savetxt(const std::string & fname, const std::vector<Vector3D> & v);
 void savetxt(const std::string & fname, const MatrixMN & A);
 
+void savebin(const std::string & fname, const std::vector<Vector3D> & v);
 void savebin(const std::string & fname, const MatrixMN & A);
 
 #endif // IO_H

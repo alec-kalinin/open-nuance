@@ -19,16 +19,17 @@
 
 using namespace std;
 
-void savetxt(const string & fname, const vector<Vector3D> & a)
+void savetxt(const string & fname, const vector<Vector3D> & v)
 {
     ofstream out;
     out.open(fname.c_str());
 
-    out << fixed << setprecision(6);
-    for (int i = 0; i < a.size(); i++) {
-        out << a[i].x << " ";
-        out << a[i].y << " ";
-        out << a[i].z << endl;
+    //out << fixed << setprecision(6);
+    out << fixed;
+    for (int i = 0; i < v.size(); i++) {
+        out << v[i].x << " ";
+        out << v[i].y << " ";
+        out << v[i].z << endl;
     }
 
     out.close();
@@ -39,7 +40,8 @@ void savetxt(const string & fname, const MatrixMN & A)
     ofstream out;
     out.open(fname.c_str());
 
-    out << fixed << setprecision(6);
+    //out << fixed << setprecision(6);
+    out << fixed;
     for (int i = 0; i < A.m_nRows; i++) {
         for (int j = 0; j < A.m_nCols; j++) {
             out << A(i, j);
@@ -49,6 +51,18 @@ void savetxt(const string & fname, const MatrixMN & A)
         out << endl;
     }
 
+    out.close();
+}
+
+void savebin(const std::string & fname, const vector<Vector3D> & v)
+{
+    ofstream out;
+    out.open(fname.c_str(), ios::out | ios::binary);
+    for (int i = 0; i < v.size(); i++) {
+        out.write(reinterpret_cast<const char *>(&v[i].x), sizeof(double));
+        out.write(reinterpret_cast<const char *>(&v[i].y), sizeof(double));
+        out.write(reinterpret_cast<const char *>(&v[i].z), sizeof(double));
+    }
     out.close();
 }
 

@@ -10,7 +10,7 @@
 #     Redistribution and use of the source code with or without modification
 #     are permitted for any scientific, research and educational purposes.
 
-""" Test numpy parallel accelerated calculations.
+""" Numpy parallel calculations examples.
 """
 
 import os, sys
@@ -25,7 +25,7 @@ import mp_share
 import utils.utils as utils
 
 
-def pyspGetR(p, q):
+def sppyGetR(p, q):
     R = np.empty((p.shape[0], q.shape[1]))    
     
     nP = p.shape[0]
@@ -39,7 +39,7 @@ def pyspGetR(p, q):
             R[i, j] = 1 / (1 + sqrt(rx * rx + ry * ry + rz * rz))
     return R
 
-def npspGetR(p, q):    
+def spnpGetR(p, q):    
     Rx = p[:, 0:1] - q[0:1]
     Ry = p[:, 1:2] - q[1:2]
     Rz = p[:, 2:3] - q[2:3]
@@ -53,7 +53,7 @@ def mp_init(sh_p, sh_q, sh_R):
     mp_share.q = sh_q
     mp_share.R = sh_R
 
-def npmpGetR_worker(job):
+def mpnpGetR_worker(job):
     start, stop = job
     p = np.reshape(np.frombuffer(mp_share.p), (-1, 3))
     q = np.reshape(np.frombuffer(mp_share.q), (3, -1))
@@ -65,7 +65,7 @@ def npmpGetR_worker(job):
 
     R[start:stop, :] = 1 / (1 + np.sqrt(Rx * Rx + Ry * Ry + Rz * Rz))
         
-def npmpGetR(p, q):
+def mpnpGetR(p, q):
     nP, nQ = p.shape[0], q.shape[1]    
     
     sh_p = mp.RawArray(ctypes.c_double, p.ravel())
@@ -76,7 +76,7 @@ def npmpGetR(p, q):
     jobs = utils.generateJobs(nP, nCPU)
     
     pool = mp.Pool(processes=nCPU, initializer=mp_init, initargs=(sh_p, sh_q, sh_R))
-    pool.map(npmpGetR_worker, jobs, chunksize=1)
+    pool.map(mpnpGetR_worker, jobs, chunksize=1)
 
     R = np.reshape(np.frombuffer(sh_R), (nP, nQ))
     return R

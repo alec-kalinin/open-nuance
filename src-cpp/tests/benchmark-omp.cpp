@@ -42,7 +42,7 @@ vector<Vector3D> generatePoints(int N)
 }
 
 //! Single thread matrix R calculation
-void stGetR(vector<Vector3D> & p, vector<Vector3D> & q, MatrixMN & R)
+void spGetR(vector<Vector3D> & p, vector<Vector3D> & q, MatrixMN & R)
 {
     for (int i = 0; i < p.size(); i++) {
         Vector3D & a = p[i];
@@ -56,7 +56,7 @@ void stGetR(vector<Vector3D> & p, vector<Vector3D> & q, MatrixMN & R)
 }
 
 //! OpenMP matrix R calculations
-void mtGetR(vector<Vector3D> & p, vector<Vector3D> & q, MatrixMN & R)
+void mpGetR(vector<Vector3D> & p, vector<Vector3D> & q, MatrixMN & R)
 {
     #pragma omp parallel for
     for (int i = 0; i < p.size(); i++) {
@@ -77,24 +77,24 @@ int main()
 
     vector<Vector3D> p = generatePoints(N);
     vector<Vector3D> q = generatePoints(N);
-    MatrixMN R(N, N);
+    MatrixMN spR(N, N), mpR(N, N);
 
-    savetxt("../results/tests/p.txt", p);
-    savetxt("../results/tests/q.txt", q);
+    savebin("../results/tests/p.bin", p);
+    savebin("../results/tests/q.bin", q);
 
     UTimer timer;
 
     timer.start();
-    stGetR(p, q, R);
+    spGetR(p, q, spR);
     timer.stop();
-    cout << "stGetR(): " << timer.ms() << " ms" << endl;
-    savebin("../results/tests/stR.bin", R);
+    cout << "spGetR(): " << timer.ms() << " ms" << endl;
+    savebin("../results/tests/R.bin", spR);
 
     timer.start();
-    mtGetR(p, q, R);
+    mpGetR(p, q, mpR);
     timer.stop();
-    cout << "mtGetR(): " << timer.ms() << " ms" << endl;
-    savebin("../results/tests/mtR.bin", R);
+    cout << "mpGetR(): " << timer.ms() << " ms" << endl;
+    cout << "error: " << fixed << (mpR - spR).norm("1") << endl;
 
     return 0;
 }

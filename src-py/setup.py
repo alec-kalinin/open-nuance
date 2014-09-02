@@ -21,8 +21,8 @@ import numpy
 extra_args = ["-fopenmp",
               "-Wno-unused-function", "-Wno-maybe-uninitialized", "-Wno-format"]
 extra_macros = []
-ext_modules = [ Extension("tests.cython_mp_ext", 
-                          ["tests/cython_mp.pyx"],
+ext_modules = [ Extension("tests.mp_cython_ext", 
+                          ["tests/mp_cython.pyx"],
                           include_dirs=[numpy.get_include()],
                           extra_compile_args=extra_args,
                           extra_link_args=extra_args,

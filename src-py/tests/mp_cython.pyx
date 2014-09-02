@@ -10,7 +10,7 @@
 #     Redistribution and use of the source code with or without modification
 #     are permitted for any scientific, research and educational purposes.
 
-""" Test cython opemnp parallel accelerated calculations.
+""" Cython parallel calculations examples.
 """
 
 import os, sys
@@ -40,7 +40,7 @@ def getThreadsNum():
          
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def cyspGetR(pp, pq):
+def spcyGetR(pp, pq):
     pR = np.empty((pp.shape[0], pq.shape[1]))    
     
     cdef int i, j, k
@@ -63,7 +63,7 @@ def cyspGetR(pp, pq):
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def cympGetR(pp, pq):
+def mpcyGetR(pp, pq):
     pR = np.empty((pp.shape[0], pq.shape[1]))    
     
     cdef int i, j, k
